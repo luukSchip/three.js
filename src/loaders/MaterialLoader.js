@@ -84,7 +84,8 @@ THREE.MaterialLoader.prototype = {
 
 		// maps
 
-		if ( json.map !== undefined ) material.map = this.getTexture( json.map );
+		if ( json.map !== undefined && !(json.map instanceof THREE.Texture)) material.map = this.getTexture( json.map );
+		else if (json.map instanceof THREE.Texture) material.map = json.map;
 
 		if ( json.alphaMap !== undefined ) {
 

@@ -14561,6 +14561,7 @@ THREE.Loader.prototype = {
 						json.side = THREE.BackSide;
 						break;
 					case 'doubleSided':
+						console.log("hier doublesided!");
 						json.side = THREE.DoubleSide;
 						break;
 					case 'transparency':
@@ -14579,6 +14580,17 @@ THREE.Loader.prototype = {
 					case 'vertexColors':
 						if ( value === true ) json.vertexColors = THREE.VertexColors;
 						if ( value === 'face' ) json.vertexColors = THREE.FaceColors;
+						break;
+					case 'base64Texture':
+						var image = document.createElement( 'img' );
+						var texture = new THREE.Texture( image );
+						texture.foo = "bar";
+						image.onload = function()  {
+						    texture.needsUpdate = true;
+						    texture.booboo = "kaka";
+						};
+						image.src = 'data:image/png;base64,'+value;
+						json.map = texture;
 						break;
 					default:
 						console.error( 'Loader.createMaterial: Unsupported', name, value );
@@ -14873,6 +14885,7 @@ THREE.JSONLoader.prototype = {
 
 	load: function( url, onLoad, onProgress, onError ) {
 
+		console.log("jsonloader loading....");
 		var scope = this;
 
 		var texturePath = this.texturePath && ( typeof this.texturePath === "string" ) ? this.texturePath : THREE.Loader.prototype.extractUrlBase( url );
@@ -15636,7 +15649,8 @@ THREE.MaterialLoader.prototype = {
 
 		// maps
 
-		if ( json.map !== undefined ) material.map = this.getTexture( json.map );
+		if ( json.map !== undefined && !(json.map instanceof THREE.Texture)) material.map = this.getTexture( json.map );
+		else if (json.map instanceof THREE.Texture) material.map = json.map;
 
 		if ( json.alphaMap !== undefined ) {
 

@@ -221,6 +221,7 @@ THREE.Loader.prototype = {
 						json.side = THREE.BackSide;
 						break;
 					case 'doubleSided':
+						console.log("hier doublesided!");
 						json.side = THREE.DoubleSide;
 						break;
 					case 'transparency':
@@ -239,6 +240,17 @@ THREE.Loader.prototype = {
 					case 'vertexColors':
 						if ( value === true ) json.vertexColors = THREE.VertexColors;
 						if ( value === 'face' ) json.vertexColors = THREE.FaceColors;
+						break;
+					case 'base64Texture':
+						var image = document.createElement( 'img' );
+						var texture = new THREE.Texture( image );
+						texture.foo = "bar";
+						image.onload = function()  {
+						    texture.needsUpdate = true;
+						    texture.booboo = "kaka";
+						};
+						image.src = 'data:image/png;base64,'+value;
+						json.map = texture;
 						break;
 					default:
 						console.error( 'Loader.createMaterial: Unsupported', name, value );

@@ -39,6 +39,7 @@ THREE.JSONLoader.prototype = {
 
 	load: function( url, onLoad, onProgress, onError ) {
 
+		console.log("jsonloader loading....");
 		var scope = this;
 
 		var texturePath = this.texturePath && ( typeof this.texturePath === "string" ) ? this.texturePath : THREE.Loader.prototype.extractUrlBase( url );
